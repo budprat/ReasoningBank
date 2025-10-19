@@ -28,6 +28,48 @@ ReasoningBank is a memory framework that enables AI agents to learn from both su
 | MaTTS Parallel | ✅ Complete | k-trajectory sampling |
 | MaTTS Sequential | ✅ Complete | Progressive refinement |
 
+
+## Architecture
+
+### System Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     ReasoningBank Agent                        │
+│                                                                 │
+│  Query ──► 1.RETRIEVE ──► 2.ACT ──► 3.JUDGE                   │
+│               ▲                          │                      │
+│               │                          ▼                      │
+│           5.CONSOLIDATE ◄── 4.EXTRACT ◄─┘                      │
+│               │                                                 │
+│               ▼                                                 │
+│         Memory Bank (JSON)                                     │
+└─────────────────────────────────────────────────────────────────┘
+
+Closed-Loop Learning Cycle:
+1. RETRIEVE: Find relevant past experiences using embeddings
+2. ACT:      Execute task with memory-augmented ReAct prompts
+3. JUDGE:    Determine success/failure (binary classification)
+4. EXTRACT:  Mine strategies (success) or lessons (failure)
+5. CONSOLIDATE: Add to persistent memory bank
+```
+
+### MaTTS (Memory-Aware Test-Time Scaling)
+
+```
+PARALLEL (Breadth):          SEQUENTIAL (Depth):
+    Query                         Query
+   ╱  │  ╲                         │
+  A1  A2  A3                      A1 ──► M1
+   ╲  │  ╱                         │
+   Best Result                    A2 ──► M1+M2
+                                   │
+                                  A3 ──► M1+M2+M3
+```
+
+📖 **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive architecture documentation
+
+
 ## Installation
 
 ### Prerequisites
@@ -256,46 +298,6 @@ ReasoningBank/
 └── docs/                       # Documentation
     └── archive/                # Development docs
 ```
-
-## Architecture
-
-### System Flow Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     ReasoningBank Agent                        │
-│                                                                 │
-│  Query ──► 1.RETRIEVE ──► 2.ACT ──► 3.JUDGE                   │
-│               ▲                          │                      │
-│               │                          ▼                      │
-│           5.CONSOLIDATE ◄── 4.EXTRACT ◄─┘                      │
-│               │                                                 │
-│               ▼                                                 │
-│         Memory Bank (JSON)                                     │
-└─────────────────────────────────────────────────────────────────┘
-
-Closed-Loop Learning Cycle:
-1. RETRIEVE: Find relevant past experiences using embeddings
-2. ACT:      Execute task with memory-augmented ReAct prompts
-3. JUDGE:    Determine success/failure (binary classification)
-4. EXTRACT:  Mine strategies (success) or lessons (failure)
-5. CONSOLIDATE: Add to persistent memory bank
-```
-
-### MaTTS (Memory-Aware Test-Time Scaling)
-
-```
-PARALLEL (Breadth):          SEQUENTIAL (Depth):
-    Query                         Query
-   ╱  │  ╲                         │
-  A1  A2  A3                      A1 ──► M1
-   ╲  │  ╱                         │
-   Best Result                    A2 ──► M1+M2
-                                   │
-                                  A3 ──► M1+M2+M3
-```
-
-📖 **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive architecture documentation
 
 ## Troubleshooting
 
