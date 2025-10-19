@@ -13,7 +13,7 @@ Quick installation guide for ReasoningBank. For comprehensive requirements analy
 ### 2. Clone Repository
 
 ```bash
-git clone https://github.com/your-org/ReasoningBank.git
+git clone https://github.com/budprat/ReasoningBank.git
 cd ReasoningBank
 ```
 
@@ -74,7 +74,7 @@ export OPENAI_API_KEY="sk-your-key-here"
 python -c "from reasoningbank import create_agent; print('✓ Installation successful!')"
 
 # Run tests (optional)
-pytest tests/unit/test_models.py -v
+python -m pytest tests/unit/test_models.py -v
 ```
 
 ## Configuration
@@ -184,7 +184,7 @@ python3.10 -m venv venv
 
 ### Method 1: Development Install (Recommended)
 ```bash
-git clone https://github.com/your-org/ReasoningBank.git
+git clone https://github.com/budprat/ReasoningBank.git
 cd ReasoningBank
 pip install -e .
 ```
@@ -243,7 +243,7 @@ After installation, verify:
 - [ ] Dependencies installed: `pip list | grep anthropic`
 - [ ] ReasoningBank installed: `python -c "import reasoningbank"`
 - [ ] API key set: `python -c "import os; print('✓' if os.getenv('ANTHROPIC_API_KEY') else '✗')"`
-- [ ] Tests pass: `pytest tests/unit/test_models.py -v`
+- [ ] Tests pass: `python -m pytest tests/unit/test_models.py -v`
 - [ ] Agent creation works: `python -c "from reasoningbank import create_agent; create_agent()"`
 
 ## System-Specific Instructions

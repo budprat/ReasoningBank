@@ -43,7 +43,8 @@ export ANTHROPIC_API_KEY="sk-ant-api03-your-key"
 python -c "from reasoningbank import ReasoningBankAgent, get_config_for_claude; print('✓ ReasoningBank installed successfully')"
 
 # 5. Run tests
-pytest tests/ -v --tb=short
+python tests/run_all_tests.py
+# Or: python -m python -m pytest tests/ -v --tb=short
 ```
 
 ### Recommended Stack
@@ -221,10 +222,11 @@ touch data/embeddings.json
 python -c "from reasoningbank import ReasoningBankAgent, get_config_for_claude"
 
 # Run quick test
-pytest tests/unit/test_models.py -v
+python -m python -m pytest tests/unit/test_models.py -v
 
 # Verify full test suite (254 tests, 100% pass rate)
-pytest tests/ -v --tb=short
+python tests/run_all_tests.py
+# Or: python -m python -m pytest tests/ -v --tb=short
 
 # Run example
 python examples/basic_usage.py
@@ -244,7 +246,7 @@ git pull origin main
 pip install -r requirements.txt
 
 # 4. Run tests
-pytest tests/ -v --tb=short
+python -m pytest tests/ -v --tb=short
 
 # 5. Code your changes
 # ... edit files ...
@@ -253,7 +255,7 @@ pytest tests/ -v --tb=short
 black reasoningbank/ tests/
 
 # 7. Run tests again
-pytest tests/ -v --cov=reasoningbank --cov-report=html
+python -m pytest tests/ -v --cov=reasoningbank --cov-report=html
 
 # 8. Commit
 git add . && git commit -m "feat: your changes"
@@ -304,50 +306,50 @@ tests/
 **Run All Tests** (100% pass rate):
 ```bash
 # Full test suite
-pytest tests/ -v
+python -m pytest tests/ -v
 
 # With coverage report
-pytest tests/ -v --cov=reasoningbank --cov-report=html
+python -m pytest tests/ -v --cov=reasoningbank --cov-report=html
 open htmlcov/index.html
 
 # Fast parallel execution (requires pytest-xdist)
-pytest tests/ -v -n auto
+python -m pytest tests/ -v -n auto
 ```
 
 **Run Specific Tests**:
 ```bash
 # Unit tests only
-pytest tests/unit/ -v
+python -m pytest tests/unit/ -v
 
 # Integration tests only
-pytest tests/integration/ -v
+python -m pytest tests/integration/ -v
 
 # MaTTS tests only
-pytest tests/matts/ -v
+python -m pytest tests/matts/ -v
 
 # Specific test file
-pytest tests/unit/test_agent.py -v
+python -m pytest tests/unit/test_agent.py -v
 
 # Specific test function
-pytest tests/unit/test_agent.py::TestReasoningBankAgent::test_agent_initialization -v
+python -m pytest tests/unit/test_agent.py::TestReasoningBankAgent::test_agent_initialization -v
 
 # Tests matching pattern
-pytest tests/ -k "memory" -v
+python -m pytest tests/ -k "memory" -v
 ```
 
 **Test Markers**:
 ```bash
 # Run only unit tests
-pytest tests/ -m unit -v
+python -m pytest tests/ -m unit -v
 
 # Run only integration tests
-pytest tests/ -m integration -v
+python -m pytest tests/ -m integration -v
 
 # Run only MaTTS tests
-pytest tests/ -m matts -v
+python -m pytest tests/ -m matts -v
 
 # Skip Google provider tests (requires SDK)
-pytest tests/ -v --ignore=tests/unit/test_retriever.py::TestMemoryRetrieverInitialization::test_retriever_initialization_google
+python -m pytest tests/ -v --ignore=tests/unit/test_retriever.py::TestMemoryRetrieverInitialization::test_retriever_initialization_google
 ```
 
 ### Continuous Integration
@@ -383,7 +385,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          pytest tests/ -v --cov=reasoningbank --cov-report=xml
+          python -m pytest tests/ -v --cov=reasoningbank --cov-report=xml
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
@@ -399,7 +401,7 @@ test:
     - pip install -r requirements.txt
     - pip install -e .
   script:
-    - pytest tests/ -v --cov=reasoningbank --cov-report=term
+    - python -m pytest tests/ -v --cov=reasoningbank --cov-report=term
   coverage: '/TOTAL.*\s+(\d+%)$/'
 ```
 
@@ -421,7 +423,7 @@ def test_new_feature():
     assert result.success is True
 
 # Step 2: Run test (fails)
-# pytest tests/unit/test_agent.py::test_new_feature -v
+# python -m pytest tests/unit/test_agent.py::test_new_feature -v
 
 # Step 3: Implement feature
 class ReasoningBankAgent:
@@ -430,7 +432,7 @@ class ReasoningBankAgent:
         return result
 
 # Step 4: Run test (passes)
-# pytest tests/unit/test_agent.py::test_new_feature -v
+# python -m pytest tests/unit/test_agent.py::test_new_feature -v
 
 # Step 5: Refactor
 ```
@@ -1268,17 +1270,17 @@ AssertionError: Expected success=True, got success=False
 **Solution**:
 ```bash
 # Run tests with verbose output
-pytest tests/ -v --tb=short
+python -m pytest tests/ -v --tb=short
 
 # Run specific failing test
-pytest tests/unit/test_agent.py::test_name -vv
+python -m pytest tests/unit/test_agent.py::test_name -vv
 
 # Check test logs
-pytest tests/ -v --log-cli-level=DEBUG
+python -m pytest tests/ -v --log-cli-level=DEBUG
 
 # Verify API key is set for tests
 export ANTHROPIC_API_KEY="test-key"
-pytest tests/ -v
+python -m pytest tests/ -v
 ```
 
 #### Issue 5: Docker Container Won't Start
@@ -1428,7 +1430,7 @@ pip install -r requirements.txt && pip install -e .
 export ANTHROPIC_API_KEY="your-key"
 
 # Testing
-pytest tests/ -v
+python -m pytest tests/ -v
 
 # Run example
 python examples/basic_usage.py

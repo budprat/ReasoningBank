@@ -11,28 +11,11 @@
 
 ## 1. Quick Installation
 
-### Option A: Using uv (Recommended - Faster)
+### Installation using venv + pip
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/ReasoningBank.git
-cd ReasoningBank
-
-# Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install dependencies
-uv sync
-
-# Verify installation
-python -c "from reasoningbank import ReasoningBankAgent, get_config_for_claude; print('✓ ReasoningBank installed successfully')"
-```
-
-### Option B: Traditional venv + pip
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/ReasoningBank.git
+git clone https://github.com/budprat/ReasoningBank.git
 cd ReasoningBank
 
 # Create virtual environment
@@ -126,11 +109,10 @@ Run it:
 python my_agent.py
 ```
 
-### Using Built-in Environments
+### Using Custom Environments
 
 ```python
 from reasoningbank import ReasoningBankAgent, ReasoningBankConfig
-from reasoningbank.environments import HotPotQAEnvironment
 
 # Initialize configuration
 config = ReasoningBankConfig(
@@ -140,9 +122,18 @@ config = ReasoningBankConfig(
     enable_memory_injection=True
 )
 
-# Create agent with HotPotQA environment
-environment = HotPotQAEnvironment()
-agent = ReasoningBankAgent(config, environment)
+# Define custom environment function
+def knowledge_environment(action: str) -> str:
+    """Custom environment for knowledge questions."""
+    if "capital of france" in action.lower():
+        return "The capital of France is Paris."
+    elif action.lower().startswith("answer:"):
+        return "Answer recorded."
+    else:
+        return f"Executed: {action}"
+
+# Create agent with custom environment
+agent = ReasoningBankAgent(config, environment=knowledge_environment)
 
 # Run a query
 result = agent.run(
@@ -160,34 +151,25 @@ print(f"Memories Extracted: {len(result.memory_items)}")
 
 ## 4. Run Included Examples
 
-### HotPotQA Examples
+### Basic Usage Example
 
 ```bash
-# Run single HotPotQA example
-python examples/run_hotpotqa.py
-
-# Run batch evaluation
-python examples/hotpotqa_batch_eval.py --num-questions 10
+# Run basic usage example
+python examples/basic_usage.py
 ```
 
-### GSM8K Math Examples
+### MaTTS Parallel Example
 
 ```bash
-# Run single math problem
-python examples/run_gsm8k.py
-
-# Run batch evaluation
-python examples/gsm8k_batch_eval.py --num-problems 20
+# Run parallel scaling example
+python examples/matts_parallel_example.py
 ```
 
-### GPQA Science Examples
+### MaTTS Sequential Example
 
 ```bash
-# Run single science question
-python examples/run_gpqa.py
-
-# Run batch evaluation
-python examples/gpqa_batch_eval.py --num-questions 15
+# Run sequential refinement example
+python examples/matts_sequential_example.py
 ```
 
 ---
@@ -195,18 +177,18 @@ python examples/gpqa_batch_eval.py --num-questions 15
 ## 5. Run Tests
 
 ```bash
-# Run all 254 tests (should see 100% pass rate)
-uv run pytest
-# Or with traditional pip: pytest tests/ -v
+# Run all tests
+python tests/run_all_tests.py
+# Or with pytest: python -m pytest tests/ -v
 
 # Run specific test categories
-uv run pytest tests/test_agent.py -v      # Agent tests
-uv run pytest tests/test_matts/ -v        # MaTTS scaling tests
-uv run pytest tests/unit/ -v              # Unit tests only
-uv run pytest tests/integration/ -v       # Integration tests
+python -m pytest tests/unit/test_agent.py -v      # Agent tests
+python -m pytest tests/matts/ -v                  # MaTTS scaling tests
+python -m pytest tests/unit/ -v                   # Unit tests only
+python -m pytest tests/integration/ -v            # Integration tests
 
 # Run with coverage report
-uv run pytest --cov=reasoningbank --cov-report=html
+python -m pytest --cov=reasoningbank --cov-report=html
 # Then open: open htmlcov/index.html
 ```
 
@@ -279,20 +261,27 @@ config = ReasoningBankConfig(
 
 ```bash
 # Start Python interactive session
-uv run python
+python
 
-# Or use IPython for better experience
-uv run ipython
+# Or use IPython for better experience (if installed)
+ipython
 ```
 
 ```python
 # In the Python session:
 from reasoningbank import ReasoningBankAgent, ReasoningBankConfig
-from reasoningbank.environments import HotPotQAEnvironment
+
+# Define a simple environment function
+def mock_environment(action: str) -> str:
+    if "calculate" in action.lower():
+        return "Calculation result: 850"
+    elif action.lower().startswith("answer:"):
+        return "Task completed."
+    else:
+        return f"Executed: {action}"
 
 config = ReasoningBankConfig(llm_provider="anthropic")
-environment = HotPotQAEnvironment()
-agent = ReasoningBankAgent(config, environment)
+agent = ReasoningBankAgent(config, environment=mock_environment)
 
 # Run queries
 result = agent.run("What is 25 * 34?", max_steps=10)
@@ -435,19 +424,20 @@ agent = ReasoningBankAgent(config, environment=my_custom_environment)
 
 ```bash
 # Install
-uv sync
+pip install -r requirements.txt
+pip install -e .
 
 # Run example
-python examples/run_hotpotqa.py
+python examples/basic_usage.py
 
 # Run tests
-uv run pytest
+python tests/run_all_tests.py
 
 # Check memory bank stats
-python -c "from reasoningbank import MemoryBankConsolidator; c = MemoryBankConsolidator(); print(c.get_statistics())"
+python -c "from reasoningbank import create_consolidator; c = create_consolidator(); print(c.get_statistics())"
 
 # Export memory bank
-python -c "from reasoningbank import MemoryBankConsolidator; c = MemoryBankConsolidator(); c.export_to_json('memory_backup.json')"
+python -c "from reasoningbank import create_consolidator; c = create_consolidator(); c.export_to_json('memory_backup.json')"
 ```
 
 ---
