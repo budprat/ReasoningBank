@@ -220,15 +220,15 @@ print(f"Final success: {result.best_trajectory.success}")
 
 ```bash
 # Run all tests (uses mocked LLM responses, no API costs)
-pytest
+python tests/run_all_tests.py
 
 # Run specific test categories
-pytest tests/unit/          # Unit tests only
-pytest tests/integration/   # Integration tests
-pytest tests/e2e/           # End-to-end tests
+python -m pytest tests/unit/          # Unit tests only
+python -m pytest tests/integration/   # Integration tests
+python -m pytest tests/e2e/           # End-to-end tests
 
 # Run with coverage report
-pytest --cov=reasoningbank --cov-report=html
+python -m pytest --cov=reasoningbank --cov-report=html
 
 # Open coverage report
 open htmlcov/index.html  # Mac/Linux
@@ -242,13 +242,13 @@ These tests validate key paper claims:
 
 ```bash
 # Gap 21: Streaming Constraint (no future information leakage)
-pytest tests/e2e/test_streaming_constraint.py -v
+python -m pytest tests/e2e/test_streaming_constraint.py -v
 
 # Gap 22: Memory Growth (WARNING: costs ~$0.60 for quick test)
-pytest tests/stress/test_memory_growth_long_term.py::TestMemoryGrowthLongTerm::test_memory_bank_grows_linearly_quick
+python -m pytest tests/stress/test_memory_growth_long_term.py::TestMemoryGrowthLongTerm::test_memory_bank_grows_linearly_quick
 
 # Gap 24: Success+Failure Learning (core innovation)
-pytest tests/ablation/test_success_and_failure_extraction.py -v
+python -m pytest tests/ablation/test_success_and_failure_extraction.py -v
 ```
 
 ### Cost Warning ⚠️
@@ -387,8 +387,8 @@ result = run_matts_sequential(query, config, k=3)
 
 Contributions welcome! Please ensure:
 
-1. All tests pass: `pytest`
-2. Coverage maintained: `pytest --cov=reasoningbank`
+1. All tests pass: `python tests/run_all_tests.py`
+2. Coverage maintained: `python -m pytest --cov=reasoningbank`
 3. Code formatted: `black reasoningbank/`
 4. Type hints included
 5. Docstrings for public APIs
