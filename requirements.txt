@@ -1,0 +1,55 @@
+# ReasoningBank Dependencies
+# Installation: pip install -r requirements.txt
+
+# ============================================
+# Core LLM Provider SDKs
+# ============================================
+# Anthropic Claude SDK - Primary recommended provider
+anthropic>=0.34.0
+
+# OpenAI SDK - Alternative LLM provider and embeddings
+openai>=1.0.0
+
+# Google Generative AI SDK - Paper's original provider (Gemini)
+google-generativeai>=0.3.0
+
+# ============================================
+# Data Processing
+# ============================================
+# NumPy - Required for embedding operations and cosine similarity
+numpy>=1.20.0
+
+# SciPy - Statistical analysis for ablation studies
+scipy>=1.9.0
+
+# ============================================
+# Testing Dependencies
+# ============================================
+# pytest - Core testing framework
+pytest>=7.0.0
+
+# pytest-cov - Code coverage measurement
+pytest-cov>=4.0.0
+
+# ============================================
+# Optional Development Tools
+# ============================================
+# python-dotenv - Load environment variables from .env file
+python-dotenv>=0.19.0
+
+# ============================================
+# Optional Testing Enhancements
+# (Uncomment if needed)
+# ============================================
+# pytest-xdist>=3.0.0        # Parallel test execution
+# pytest-timeout>=2.1.0       # Test timeouts
+# pytest-mock>=3.10.0         # Enhanced mocking
+
+# ============================================
+# Optional Development Tools
+# (Uncomment if needed)
+# ============================================
+# black>=23.0.0              # Code formatting
+# pylint>=2.15.0             # Linting
+# flake8>=6.0.0              # Style checking
+# mypy>=1.0.0                # Type checking
